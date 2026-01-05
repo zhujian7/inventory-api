@@ -39,7 +39,17 @@ check_kafka_readiness() {
 
 TMP_DIR=$(mktemp -d)
 KIND=${TMP_DIR}/kind27
-wget -O $KIND https://github.com/kubernetes-sigs/kind/releases/download/v0.27.0/kind-linux-amd64
+
+# Detect platform and architecture
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH=$(uname -m)
+if [ "$ARCH" = "x86_64" ]; then
+  ARCH="amd64"
+elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+  ARCH="arm64"
+fi
+
+wget -O $KIND https://github.com/kubernetes-sigs/kind/releases/download/v0.27.0/kind-${OS}-${ARCH}
 chmod +x $KIND
 
 
