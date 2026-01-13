@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "namespace_name": {
+      "type": "string",
+      "description": "The name of the Kubernetes namespace"
+    },
+    "cluster_id": {
+      "type": "string",
+      "description": "The ID of the cluster this namespace belongs to"
+    },
+    "cluster_reporter": {
+      "type": "string",
+      "description": "The reporter type for the cluster (e.g., 'acm')"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "NAMESPACE_STATUS_UNSPECIFIED",
+        "NAMESPACE_STATUS_OTHER",
+        "ACTIVE",
+        "TERMINATING"
+      ],
+      "description": "The current status of the namespace"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Timestamp when the namespace was created"
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Labels associated with the namespace"
+    },
+    "annotations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Annotations associated with the namespace"
+    }
+  },
+  "required": [
+    "namespace_name",
+    "cluster_id",
+    "cluster_reporter",
+    "status"
+  ]
+}

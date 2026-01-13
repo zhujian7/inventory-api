@@ -492,6 +492,11 @@
     relation t_workspace: rbac/workspace
   }
 
+  definition acm/k8s_namespace {
+    relation t_workspace: rbac/workspace
+    relation t_cluster: acm/k8s_cluster
+  }
+
   definition acm/k8s_policy {
     relation t_workspace: rbac/workspace
   }

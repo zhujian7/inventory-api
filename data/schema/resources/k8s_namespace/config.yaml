@@ -1,0 +1,3 @@
+resource_type: k8s_namespace
+resource_reporters:
+  - ACM

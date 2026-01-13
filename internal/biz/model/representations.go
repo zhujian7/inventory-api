@@ -75,3 +75,17 @@ func (r *Representations) WorkspaceID() string {
 	}
 	return ""
 }
+
+// ClusterInfo returns the cluster_id and cluster_reporter from the reporter representation data.
+// Returns empty strings if not present or if reporter representation is not available.
+// This is used for k8s_namespace resources to establish the parent cluster relationship.
+func (r *Representations) ClusterInfo() (string, string) {
+	if r != nil && len(r.reporterData) > 0 {
+		clusterID, idOk := r.reporterData["cluster_id"].(string)
+		clusterReporter, reporterOk := r.reporterData["cluster_reporter"].(string)
+		if idOk && reporterOk {
+			return clusterID, clusterReporter
+		}
+	}
+	return "", ""
+}

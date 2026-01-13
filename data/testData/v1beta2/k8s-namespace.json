@@ -1,0 +1,32 @@
+{
+  "type": "k8s_namespace",
+  "reporterType": "ACM",
+  "reporterInstanceId": "14c6b63e-49b2-4cc2-99de-5d914b657548",
+  "representations": {
+    "metadata": {
+      "localResourceId": "namespace-12345-67890-abcdef",
+      "apiHref": "https://apiHref.com/namespaces/default",
+      "consoleHref": "https://www.console.com/namespaces/default",
+      "reporterVersion": "0.2.0"
+    },
+    "common": {
+      "workspace_id": "aee8f698-9d43-49a1-b458-680a7c9dc046"
+    },
+    "reporter": {
+      "namespace_name": "default",
+      "cluster_id": "ae5c7a82-cb3b-4591-9b10-3ae1506d4f3d",
+      "cluster_reporter": "acm",
+      "status": "ACTIVE",
+      "created_at": "2024-01-15T10:30:00Z",
+      "labels": {
+        "kubernetes.io/metadata.name": "default",
+        "environment": "production",
+        "team": "platform"
+      },
+      "annotations": {
+        "description": "Default namespace for the cluster",
+        "managed-by": "acm"
+      }
+    }
+  }
+}

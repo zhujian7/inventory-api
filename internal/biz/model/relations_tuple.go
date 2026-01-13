@@ -100,6 +100,7 @@ func (rs RelationsSubject) Subject() RelationsResource {
 
 const (
 	WorkspaceRelation = "workspace"
+	ClusterRelation   = "cluster"
 	RbacNamespace     = "rbac"
 )
 
@@ -122,4 +123,26 @@ func NewWorkspaceRelationsTuple(workspaceID string, key ReporterResourceKey) Rel
 	subject := NewRelationsSubject(workspaceSubject)
 
 	return NewRelationsTuple(resource, WorkspaceRelation, subject)
+}
+
+func NewClusterRelationsTuple(clusterID string, clusterReporter string, key ReporterResourceKey) RelationsTuple {
+	resourceId := key.LocalResourceId()
+	resourceType := key.ResourceType()
+	reporterType := key.ReporterType()
+
+	namespace := strings.ToLower(reporterType.String())
+
+	resourceObjectType := NewRelationsObjectType(
+		strings.ToLower(resourceType.String()),
+		namespace,
+	)
+	resource := NewRelationsResource(resourceId, resourceObjectType)
+
+	clusterSubjectId, _ := NewLocalResourceId(clusterID)
+	clusterNamespace := strings.ToLower(clusterReporter)
+	clusterObjectType := NewRelationsObjectType("k8s_cluster", clusterNamespace)
+	clusterSubject := NewRelationsResource(clusterSubjectId, clusterObjectType)
+	subject := NewRelationsSubject(clusterSubject)
+
+	return NewRelationsTuple(resource, ClusterRelation, subject)
 }
