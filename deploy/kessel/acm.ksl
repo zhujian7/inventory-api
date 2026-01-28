@@ -3,34 +3,6 @@ namespace acm
 
 import rbac
 
-
-// Extend RBAC model
-// @rbac.add_permission(name:'create_deployment')
-// @rbac.add_permission(name:'create_vm')
-// public type cluster {
-//     relation workspace: [ExactlyOne rbac.workspace]
-
-//     // Define cluster-level permissions,
-//     // which are inherited from the workspace-level permissions
-//     // that we defined above.
-//     relation create_deployment: workspace.create_deployment or user_grant.create_deployment
-//     relation create_vm: workspace.create_vm or user_grant.create_deployment
-//     relation user_grant: [Any rbac.role_binding]
-// }
-
-
-// public type k8s_namespace {
-//     relation workspace: [ExactlyOne rbac.workspace]
-//     relation cluster: [ExactlyOne cluster]
-
-//     // Define k8s_namespace-level permissions,
-//     // which are inherited from the cluster-level permissions
-//     // that we defined above.
-//     relation create_deployment: cluster.create_deployment or user_grant.create_deployment
-//     relation create_vm: cluster.create_vm or user_grant.create_deployment
-//     relation user_grant: [Any rbac.role_binding]
-// }
-
 public type k8s_cluster {
     relation workspace:  [ExactlyOne rbac.workspace]
     relation user_grant: [Any rbac.role_binding]
@@ -42,14 +14,15 @@ public type k8s_namespace {
     relation user_grant: [Any rbac.role_binding]
 }
 
-@rbac.add_permission(name:'create_deployment')
-@rbac.add_permission(name:'create_vm')
-@add_permission(name:'create_deployment')
-@add_permission(name:'create_vm')
-public type test_acm{
+// cluster scope permission
+public extension add_cluster_permission(name) {
+    type k8s_cluster{
+        internal relation `${name}`: user_grant.`${name}` or workspace.`${name}`
+    }
 }
 
-public extension add_permission(name) {
+// namespace scope permission
+public extension add_ns_permission(name) {
     type k8s_cluster{
         internal relation `${name}`: user_grant.`${name}` or workspace.`${name}`
     }
@@ -57,4 +30,17 @@ public extension add_permission(name) {
     type k8s_namespace{
         internal relation `${name}`: user_grant.`${name}` or workspace.`${name}` or cluster.`${name}`
     }
+}
+
+// Extend RBAC model with relevant permissions
+@rbac.add_permission(name:'create_vm')
+@rbac.add_permission(name:'create_deployment')
+@rbac.add_permission(name:'create_secret')
+@rbac.add_permission(name:'create_clusterrole')
+// Extend k8s_cluster and k8s_namespace
+@add_ns_permission(name:'create_vm')
+@add_ns_permission(name:'create_deployment')
+@add_ns_permission(name:'create_secret')
+@add_cluster_permission(name:'create_clusterrole')
+public type test_acm{
 }

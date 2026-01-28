@@ -1,5 +1,7 @@
 definition acm/k8s_cluster {
+	permission create_clusterrole = t_user_grant->create_clusterrole + t_workspace->create_clusterrole
 	permission create_deployment = t_user_grant->create_deployment + t_workspace->create_deployment
+	permission create_secret = t_user_grant->create_secret + t_workspace->create_secret
 	permission create_vm = t_user_grant->create_vm + t_workspace->create_vm
 	permission user_grant = t_user_grant
 	relation t_user_grant: rbac/role_binding
@@ -11,6 +13,7 @@ definition acm/k8s_namespace {
 	permission cluster = t_cluster
 	relation t_cluster: acm/k8s_cluster
 	permission create_deployment = t_user_grant->create_deployment + t_workspace->create_deployment + t_cluster->create_deployment
+	permission create_secret = t_user_grant->create_secret + t_workspace->create_secret + t_cluster->create_secret
 	permission create_vm = t_user_grant->create_vm + t_workspace->create_vm + t_cluster->create_vm
 	permission user_grant = t_user_grant
 	relation t_user_grant: rbac/role_binding
@@ -35,14 +38,20 @@ definition rbac/group {
 definition rbac/principal {}
 
 definition rbac/role {
+	permission create_clusterrole = t_create_clusterrole
+	relation t_create_clusterrole: rbac/principal:*
 	permission create_deployment = t_create_deployment
 	relation t_create_deployment: rbac/principal:*
+	permission create_secret = t_create_secret
+	relation t_create_secret: rbac/principal:*
 	permission create_vm = t_create_vm
 	relation t_create_vm: rbac/principal:*
 }
 
 definition rbac/role_binding {
+	permission create_clusterrole = (subject & t_granted->create_clusterrole)
 	permission create_deployment = (subject & t_granted->create_deployment)
+	permission create_secret = (subject & t_granted->create_secret)
 	permission create_vm = (subject & t_granted->create_vm)
 	permission granted = t_granted
 	relation t_granted: rbac/role
@@ -51,7 +60,9 @@ definition rbac/role_binding {
 }
 
 definition rbac/workspace {
+	permission create_clusterrole = t_user_grant->create_clusterrole + t_parent->create_clusterrole
 	permission create_deployment = t_user_grant->create_deployment + t_parent->create_deployment
+	permission create_secret = t_user_grant->create_secret + t_parent->create_secret
 	permission create_vm = t_user_grant->create_vm + t_parent->create_vm
 	permission parent = t_parent
 	relation t_parent: rbac/workspace

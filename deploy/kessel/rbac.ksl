@@ -20,17 +20,6 @@ public type workspace {
     relation user_grant: [Any role_binding]
 }
 
-// public type cluster {
-//     relation workspace:  [ExactlyOne workspace]
-//     relation user_grant: [Any role_binding]
-// }
-
-// public type k8s_namespace {
-//     relation workspace:  [ExactlyOne workspace]
-//     relation cluster:  [ExactlyOne cluster]
-//     relation user_grant: [Any role_binding]
-// }
-
 public extension add_permission(name) {
     type role {
         private relation `${name}`: [bool]
@@ -43,14 +32,6 @@ public extension add_permission(name) {
     type workspace {
         internal relation `${name}`: user_grant.`${name}` or parent.`${name}`
     }
-
-    // type cluster{
-    //     internal relation `${name}`: user_grant.`${name}` or workspace.`${name}`
-    // }
-
-    // type k8s_namespace{
-    //     internal relation `${name}`: user_grant.`${name}` or workspace.`${name}` or cluster.`${name}`
-    // }
 }
 
 

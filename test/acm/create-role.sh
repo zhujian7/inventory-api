@@ -1,5 +1,5 @@
 ROLE_NAME="app-admin-role"
-PERMISSIONS=("create_deployment")
+PERMISSIONS=("create_deployment" "create_secret")
 RELATIONS_PORT=9000
 TUPLES=""
 for i in "${!PERMISSIONS[@]}"; do

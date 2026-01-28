@@ -397,12 +397,12 @@ First, create the parent k8s_cluster, then create k8s_namespace referencing it.
 kubectl port-forward service/kessel-inventory-service 8081:8081 &
 
 # Create k8s_cluster (parent resource)
-curl -X POST http://localhost:8081/api/inventory/v1beta2/resources/k8s_cluster \
+curl -X POST http://localhost:8081/api/inventory/v1beta2/resources \
   -H "Content-Type: application/json" \
   -d @data/testData/v1beta2/k8s-cluster.json
 
 # Create k8s_namespace (child resource)
-curl -X POST http://localhost:8081/api/inventory/v1beta2/resources/k8s_namespace \
+curl -X POST http://localhost:8081/api/inventory/v1beta2/resources \
   -H "Content-Type: application/json" \
   -d @data/testData/v1beta2/k8s-namespace.json
 ```
@@ -855,12 +855,12 @@ kubectl rollout status deployment/kessel-inventory
 kubectl port-forward service/kessel-inventory-service 8081:8081 &
 
 # 6. Create cluster (parent)
-curl -X POST http://localhost:8081/api/inventory/v1beta2/resources/k8s_cluster \
+curl -X POST http://localhost:8081/api/inventory/v1beta2/resources \
   -H "Content-Type: application/json" \
   -d @data/testData/v1beta2/k8s-cluster.json
 
 # 7. Create namespace (child)
-curl -X POST http://localhost:8081/api/inventory/v1beta2/resources/k8s_namespace \
+curl -X POST http://localhost:8081/api/inventory/v1beta2/resources \
   -H "Content-Type: application/json" \
   -d @data/testData/v1beta2/k8s-namespace.json
 
