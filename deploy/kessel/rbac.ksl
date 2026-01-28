@@ -1,0 +1,56 @@
+version 0.1
+namespace rbac
+
+public type principal {}
+
+public type group {
+    relation member: [Any principal or group.member]
+}
+
+public type role {
+}
+
+public type role_binding {
+    relation subject: [Any principal or group.member]
+    relation granted: [AtLeastOne role]
+}
+
+public type workspace {
+    relation parent: [AtMostOne workspace]
+    relation user_grant: [Any role_binding]
+}
+
+// public type cluster {
+//     relation workspace:  [ExactlyOne workspace]
+//     relation user_grant: [Any role_binding]
+// }
+
+// public type k8s_namespace {
+//     relation workspace:  [ExactlyOne workspace]
+//     relation cluster:  [ExactlyOne cluster]
+//     relation user_grant: [Any role_binding]
+// }
+
+public extension add_permission(name) {
+    type role {
+        private relation `${name}`: [bool]
+    }
+
+    type role_binding {
+        internal relation `${name}`: subject and granted.`${name}`
+    }
+
+    type workspace {
+        internal relation `${name}`: user_grant.`${name}` or parent.`${name}`
+    }
+
+    // type cluster{
+    //     internal relation `${name}`: user_grant.`${name}` or workspace.`${name}`
+    // }
+
+    // type k8s_namespace{
+    //     internal relation `${name}`: user_grant.`${name}` or workspace.`${name}` or cluster.`${name}`
+    // }
+}
+
+

@@ -42,8 +42,8 @@ definition rbac/role {
 }
 
 definition rbac/role_binding {
-	permission create_deployment = subject & t_granted->create_deployment
-	permission create_vm = subject & t_granted->create_vm
+	permission create_deployment = (subject & t_granted->create_deployment)
+	permission create_vm = (subject & t_granted->create_vm)
 	permission granted = t_granted
 	relation t_granted: rbac/role
 	permission subject = t_subject

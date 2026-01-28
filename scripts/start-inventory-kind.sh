@@ -135,7 +135,7 @@ while true; do
 
 done
 
-kubectl apply -f deploy/kind/e2e/e2e-batch.yaml
+# kubectl apply -f deploy/kind/e2e/e2e-batch.yaml
 echo "Setup complete."
 rm -rf $TMP_DIR
 rm -rf $KIND
